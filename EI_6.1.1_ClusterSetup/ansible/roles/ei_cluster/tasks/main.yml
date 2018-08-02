@@ -1,0 +1,68 @@
+---
+# tasks file for ei_cluster
+
+    - name: Create a directory called WSO2 in location /etc
+      file: path=/etc/WSO2 state=directory 
+      tags: list1
+
+    - name: Download WSO2 Enterprise Integrator 6.1.1 in the created directory
+      command: "wget --user-agent={{usr}} --referer={{ref}} {{url2}} -P /etc/WSO2/"
+      tags: list2
+
+    - name: Install unzip 
+      apt: name=unzip state=latest
+      tags: list3
+
+    - name: Unzip the package
+      unarchive: src=/etc/WSO2/wso2ei-6.1.1.zip dest=/etc/WSO2/ remote_src=yes
+      tags: list4
+
+    - name: Create a backup directory for ei_configs
+      file: path=/var/backups/ei_config_backups state=directory
+      tags: list5
+
+    - name: Backup the carbon.xml file
+      command: mv /etc/WSO2/wso2ei-6.1.1/conf/carbon.xml /var/backups/ei_config_backups/bck_carbon.xml
+      tags: list6
+
+    - name: Backup the axis2.xml file
+      command: mv /etc/WSO2/wso2ei-6.1.1/conf/axis2/axis2.xml /var/backups/ei_config_backups/bck_axis2.xml
+      tags: list7
+
+    - name: Backup the catalina-server.xml file
+      command: mv /etc/WSO2/wso2ei-6.1.1/conf/tomcat/catalina-server.xml /var/backups/ei_config_backups/bck_catalina-server.xml
+      tags: list8 
+
+    - name: Backup the log4j.properties file
+      command: mv /etc/WSO2/wso2ei-6.1.1/conf/log4j.properties /var/backups/ei_config_backups/bck_log4j.properties
+      tags: list9  
+ 
+    - name: Copy the Axis2.xml
+      template: src=/etc/ansible/roles/ei_cluster/templates/axis2.xml.j2 dest=/etc/WSO2/wso2ei-6.1.1/conf/axis2/axis2.xml owner="root" group="root" mode=0777
+      tags: list10
+
+    - name: Copy the catalina-server.xml
+      template: src=/etc/ansible/roles/ei_cluster/templates/catalina-server.xml.j2 
+                dest=/etc/WSO2/wso2ei-6.1.1/conf/tomcat/catalina-server.xml owner="root" group="root" mode=0777
+      tags: list11    
+
+    - name: Copy the hazelcast.properties
+      template: src=/etc/ansible/roles/ei_cluster/templates/hazelcast.properties.j2 
+                dest=/etc/WSO2/wso2ei-6.1.1/conf/hazelcast.properties owner="root" group="root" mode=0777
+      tags: list12
+
+    - name: Copy the carbon.xml
+      template: src=/etc/ansible/roles/ei_cluster/templates/carbon.xml.j2 dest=/etc/WSO2/wso2ei-6.1.1/conf/carbon.xml owner="root" group="root" mode=0777
+      tags: list13
+
+    - name: Copy the test_service
+      template: src=/etc/ansible/roles/ei_cluster/templates/test_service.xml.j2 dest=/etc/WSO2/wso2ei-6.1.1/repository/deployment/server/synapse-configs/default/proxy-services/test_service.xml
+      tags: list14
+
+    - name: Copy the log4j.properties
+      copy:
+        src: /etc/ansible/roles/ei_cluster/templates/log4j.properties.j2 
+        dest: /etc/WSO2/wso2ei-6.1.1/conf/log4j.properties 
+        mode: 0777
+      tags: list15
+

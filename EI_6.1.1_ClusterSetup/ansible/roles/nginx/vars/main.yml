@@ -1,0 +1,11 @@
+---
+# vars file for nginx
+
+clusterDomain: digin.ei.io    
+HostName: ei.digin.io
+
+localMemberHost1: 35.190.239.86  
+localMemberHost2: 35.194.221.181
+
+ssl_path: /etc/nginx/ssl
+conf_path: /etc/nginx/conf.d

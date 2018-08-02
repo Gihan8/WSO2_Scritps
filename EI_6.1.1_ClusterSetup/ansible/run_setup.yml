@@ -1,0 +1,9 @@
+---
+ - hosts: webservers2
+   roles:
+     - nginx
+
+ - hosts: webservers
+   roles:
+      - java8
+      - ei_cluster

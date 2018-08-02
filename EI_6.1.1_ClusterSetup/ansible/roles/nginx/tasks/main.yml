@@ -1,0 +1,47 @@
+---
+# tasks file for nginx
+
+ - name: Check if nginxis already installed.
+   stat: path=/etc/init.d/nginx
+   register: nginx_installed
+   tags: list1
+
+ - name: Ensure Nginx packages are installed | Debian
+   apt:  update_cache=yes name=nginx state=latest
+   when: nginx_installed.stat.exists == false and ansible_os_family == 'Debian'
+   tags: list2
+
+ - name: Create a backup directory for SSL, location /etc/nginx
+   file: path=/etc/nginx/ssl state=directory owner="root" group="root" mode=0777
+   when: nginx_installed.stat.exists == false and ansible_os_family == 'Debian'
+   tags: list3
+
+ - name: Copy the ei.http.conf, to /etc/nginx/conf.d directory
+   template: src=/etc/ansible/roles/nginx/templates/ei.http.conf.j2 dest={{conf_path}}/ei.http.conf owner="root" group="root" mode=0777
+ # when: nginx_installed.stat.exists == false and ansible_os_family == 'Debian'
+   tags: list4
+
+ - name: Copy the ui.ei.https.conf, to /etc/nginx/conf.d directory
+   template: src=/etc/ansible/roles/nginx/templates/ui.ei.https.conf.j2 dest={{conf_path}}/ui.ei.https.conf owner="root" group="root" mode=0777
+  #when: nginx_installed.stat.exists == false and ansible_os_family == 'Debian'
+   tags: list5
+
+ - name: Copy the server.crt file
+   copy: src=/etc/ansible/roles/nginx/files/server.crt dest={{ssl_path}}
+  #when: nginx_installed.stat.exists == false and ansible_os_family == 'Debian'
+   tags: list6
+
+ - name: Copy the server.csr file
+   copy: src=/etc/ansible/roles/nginx/files/server.csr dest={{ssl_path}}
+  #when: nginx_installed.stat.exists == false and ansible_os_family == 'Debian'
+   tags: list7
+
+ - name: Copy the server.key file
+   copy: src=/etc/ansible/roles/nginx/files/server.key dest={{ssl_path}}
+  #when: nginx_installed.stat.exists == false and ansible_os_family == 'Debian'
+   tags: list8
+
+ - name: Copy the server.key.org file
+   copy: src=/etc/ansible/roles/nginx/files/server.key.org dest={{ssl_path}}
+  #when: nginx_installed.stat.exists == false and ansible_os_family == 'Debian'
+   tags: list9

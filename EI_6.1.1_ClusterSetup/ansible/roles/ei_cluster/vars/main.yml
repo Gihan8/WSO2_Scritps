@@ -1,0 +1,21 @@
+---
+# vars file for ei_cluster    
+
+    usr: "testuser"
+    ref: "http://connect.wso2.com/wso2/getform/reg/new_product_download"
+    url2: https://product-dist.wso2.com/products/enterprise-integrator/6.1.1/wso2ei-6.1.1.zip
+   
+    HostName: ei.digin.io
+    MgtHostName: ei.digin.io 
+    Offset: 0
+
+    proxyPort1: 80
+    proxyPort2: 443
+ 
+    clusterDomain: digin.ei.io
+    localMemberHost1: 35.190.239.86  
+    localMemberHost2: 35.194.221.181
+    localMemberPort: 4100
+
+    member_ip1: 10.146.0.2
+    member_ip2: 10.140.0.2
